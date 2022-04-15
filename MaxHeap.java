@@ -104,7 +104,10 @@ public final class MaxHeap<T extends Comparable<? super T>> implements MaxHeapIn
     }
 
     public void ensureCapacity(){
-
+        /* Are we using this to make sure we have enough room for another child on a certain leaf?
+        ** If so should we use the formula to make sure that there is enough room in the array
+        ** to add a child based on the parents position in the array?
+        */
     }
 
     private void reheap(int rootIndex){
