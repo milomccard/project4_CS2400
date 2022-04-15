@@ -108,6 +108,8 @@ public final class MaxHeap<T extends Comparable<? super T>> implements MaxHeapIn
         ** If so should we use the formula to make sure that there is enough room in the array
         ** to add a child based on the parents position in the array?
         */
+        if ((lastIndex * 2) > heap.length)
+            throw new SecurityException("Array MaxHeap not currently large enough.");
     }
 
     private void reheap(int rootIndex){
