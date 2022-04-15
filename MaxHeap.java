@@ -92,9 +92,9 @@ public final class MaxHeap<T extends Comparable<? super T>> implements MaxHeapIn
         lastIndex = 0;
     }
 
-    public void checkCapacity(int number){
-        if (number > MAX_CAPACITY)
-            // throw some exception
+    public void checkCapacity(int topIndex){
+        if (topIndex > MAX_CAPACITY)
+            throw new SecurityException("Array MaxHeap is corrupt");
     }
 
     public void checkInitialization(){
