@@ -17,15 +17,26 @@ public class DriverMaxHeap{
 
     static void sequentialInsertion(File file) throws FileNotFoundException{
 
+        int switchCount = 0;
         Scanner scanFile = new Scanner(file);
         MaxHeap<Integer> maxheap = new MaxHeap<Integer>(200);
 
         while (scanFile.hasNextLine()){
+
+           int max = maxheap.getMax();
+
            int i = Integer.parseInt(scanFile.nextLine());
            maxheap.add(i);
+
+           int newMax = maxheap.getMax();
+           if (max != newMax){
+               switchCount++;
+           }
+           
         }
 
         scanFile.close();
+        
     }
 
     static void optimalMethod(){
