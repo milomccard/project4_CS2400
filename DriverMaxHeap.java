@@ -20,6 +20,7 @@ public class DriverMaxHeap{
         int switchCount = 0;
         Scanner scanFile = new Scanner(file);
         MaxHeap<Integer> maxheap = new MaxHeap<Integer>(200);
+        File outputFile = new File("maxHeapOutPut.txt");
 
         while (scanFile.hasNextLine()){
 
@@ -32,10 +33,10 @@ public class DriverMaxHeap{
            if (max != newMax){
                switchCount++;
            }
-           
         }
-
         scanFile.close();
+
+
         
     }
 
