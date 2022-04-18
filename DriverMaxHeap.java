@@ -9,40 +9,84 @@ import java.util.Scanner;
  * of max heaps and makes use of generics.
  */
 public class DriverMaxHeap{
-    public static void main(String[] args){
-        File randomFile = new File("C:\Users\User\Documents\College\Junior Year\CS 2400\Project 4\src\data_random.txt");
-        File sortedFile = new File("C:\Users\User\Documents\College\Junior Year\CS 2400\Project 4\src\data_sorted.txt");
 
-    }
+    
+    
+    public static void main(String[] args) throws FileNotFoundException{
 
-    static void sequentialInsertion(File file) throws FileNotFoundException{
 
-        int switchCount = 0;
-        Scanner scanFile = new Scanner(file);
-        MaxHeap<Integer> maxheap = new MaxHeap<Integer>(200);
-        File outputFile = new File("maxHeapOutPut.txt");
+        String fileName = "data_sorted.txt";
 
-        while (scanFile.hasNextLine()){
+        System.out.println("\n\n****************** Heap Generation ******************");
+        
+        generateHeap(fileName);
 
-           int max = maxheap.getMax();
+        fileName = "data_random.txt";
 
-           int i = Integer.parseInt(scanFile.nextLine());
-           maxheap.add(i);
-
-           int newMax = maxheap.getMax();
-           if (max != newMax){
-               switchCount++;
-           }
-        }
-        scanFile.close();
+        generateHeap(fileName);
 
 
         
+
+        
+
     }
 
-    static void optimalMethod(){
+    static void generateHeap(String fileName) throws FileNotFoundException{
+        System.out.println("\nFile name: " + fileName);
+        sequentialInsertion(fileName);
+        optimalMethod(fileName);
+    }
 
+    static void sequentialInsertion(String fileName) throws FileNotFoundException{
+        Scanner scan = new Scanner(new File(fileName));
+        MaxHeap<Integer> heap = new MaxHeap<>(200);
+        while(scan.hasNextInt())
+            heap.add(scan.nextInt());
+        scan.close();
+
+        int iterations = 10;
+
+        System.out.print("\n\tHeap built using sequential insertions: ");
+        heap.toString(iterations);
+        System.out.print("...\n\n");
+
+        System.out.println("\tNumber of swaps in the heap creation: " + heap.getSwap() + "\n");
+
+        for(int i = 0; i < iterations; i++){
+            heap.removeMax();
+        }
+
+        System.out.print("\tHeap after " + iterations + " removals: ");
+        heap.toString(iterations);
+        System.out.println("\n\n");
+    }
+
+    static void optimalMethod(String fileName) throws FileNotFoundException{
+        File file = new File(fileName);
+        Scanner scan = new Scanner(file);
+        Integer[] arr = new Integer[100];
+        int counter = 0;
+        int iterations = 10;
+
+        while(scan.hasNextInt())
+            arr[counter++] = scan.nextInt();
+        scan.close();
+
+        MaxHeap<Integer> heap = new MaxHeap<>(arr);
+
+        System.out.print("\n\tHeap built using optimal method: ");
+        heap.toString(iterations);
+        System.out.print("...\n\n");
+
+        System.out.println("\tNumber of swaps in the heap creation: " + heap.getSwap() + "\n");
+
+        for(int i = 0; i < iterations; i++){
+            heap.removeMax();
+        }
+
+        System.out.print("\tHeap after " + iterations + " removals: ");
+        heap.toString(iterations);
+        System.out.println("\n");
     }
 }
-
-//testing

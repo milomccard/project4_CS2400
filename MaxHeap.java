@@ -6,12 +6,13 @@ public final class MaxHeap<T extends Comparable<? super T>> implements MaxHeapIn
     private static final int DEFAULT_CAPACITY = 25;
     private static final int MAX_CAPACITY = 10000;
 
+    private int swapCounter = 0;
+
     public MaxHeap(){
         this(DEFAULT_CAPACITY);
     }
 
     public MaxHeap(int initialCapacity){
-
         if (initialCapacity < DEFAULT_CAPACITY)
             initialCapacity = DEFAULT_CAPACITY;
         else
@@ -24,6 +25,18 @@ public final class MaxHeap<T extends Comparable<? super T>> implements MaxHeapIn
         initialized = true;
     }
 
+    public MaxHeap(T[] entries){
+        this(entries.length);
+        lastIndex = entries.length;
+        assert initialized = true;
+ 
+        for(int index = 0; index < entries.length; index++)
+            heap[index + 1] = entries[index];
+        
+        for(int rootIndex = lastIndex / 2; rootIndex > 0; rootIndex --)
+            reheap(rootIndex);
+    }
+
     // the sequential add method
     public void add(T newEntry){
 
@@ -31,19 +44,17 @@ public final class MaxHeap<T extends Comparable<? super T>> implements MaxHeapIn
         int newIndex = lastIndex + 1;
         int parentIndex = newIndex / 2;
         
-        while ( (parentIndex > 0) && ((Object) newEntry).compareTo(heap[parentIndex]) > 0){
+        while ( (parentIndex > 0) && newEntry.compareTo(heap[parentIndex]) > 0){
             heap[newIndex] = heap[parentIndex];
             newIndex = parentIndex;
             parentIndex = newIndex / 2;
+
+            swapCounter++;
         }
 
         heap[newIndex] = newEntry;
         lastIndex++;
         ensureCapacity();
-    }
-
-    public void smartAdd(T newEntryT){
-
     }
 
     public T removeMax(){
@@ -112,28 +123,36 @@ public final class MaxHeap<T extends Comparable<? super T>> implements MaxHeapIn
             throw new SecurityException("Array MaxHeap not currently large enough.");
     }
 
-    private void reheap(int rootIndex){
 
+    private void reheap(int rootIndex) {
         boolean done = false;
         T orphan = heap[rootIndex];
         int leftChildIndex = 2 * rootIndex;
 
-        while (!done && (leftChildIndex <= lastIndex)){
+        while (!done && (leftChildIndex <= lastIndex)) {
             int largerChildIndex = leftChildIndex;
             int rightChildIndex = leftChildIndex + 1;
-
-            if ((rightChildIndex <= lastIndex) && heap[rightChildIndex].compareTo(heap[largerChildIndex]) < 0){
+            if ((rightChildIndex <= lastIndex) && heap[rightChildIndex].compareTo(heap[largerChildIndex]) > 0) {
                 largerChildIndex = rightChildIndex;
             }
-
-            if (orphan.compareTo(heap[largerChildIndex]) < 0){
+            if (orphan.compareTo(heap[largerChildIndex]) < 0) {
                 heap[rootIndex] = heap[largerChildIndex];
                 rootIndex = largerChildIndex;
                 leftChildIndex = 2 * rootIndex;
-            }
-            else    
+                swapCounter++;
+            } else
                 done = true;
         }
         heap[rootIndex] = orphan;
     }
+
+    public void toString(int x){
+        for(int i = 1; i <= x; i++)
+            System.out.print(heap[i] + ",");
+    }
+
+    public int getSwap(){
+        return swapCounter;
+    }
+
 }
