@@ -59,6 +59,7 @@ public class DriverMaxHeap{
 
         System.out.print("\tHeap after " + iterations + " removals: ");
         heap.toString(iterations);
+        System.out.print("...");
         System.out.println("\n\n");
     }
 
@@ -87,6 +88,7 @@ public class DriverMaxHeap{
 
         System.out.print("\tHeap after " + iterations + " removals: ");
         heap.toString(iterations);
+        System.out.print("...");
         System.out.println("\n");
     }
 }
