@@ -1,3 +1,5 @@
+import java.io.PrintWriter;
+
 public final class MaxHeap<T extends Comparable<? super T>> implements MaxHeapInterface<T>{
     
     private final T[] heap;//the array representing the heap
@@ -188,15 +190,18 @@ public final class MaxHeap<T extends Comparable<? super T>> implements MaxHeapIn
     /**
      * Prints the heap to screen
      * @param x the number of entries to print
+     * @param out write to file
      */
-    public void toString(int x){
-        for(int i = 1; i <= x; i++)
+    public void toString(int x, PrintWriter out){
+        for(int i = 1; i <= x; i++){
             System.out.print(heap[i] + ",");
+            out.print(heap[i] + ",");
+        }
     }
 
     /**
      * Counts the number of times a swap has occured while adding or heapifying.
-     * @return the count of swaps
+     * @return
      */
     public int getSwap(){
         return swapCounter;
