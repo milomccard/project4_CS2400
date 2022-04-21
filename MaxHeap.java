@@ -1,17 +1,24 @@
 public final class MaxHeap<T extends Comparable<? super T>> implements MaxHeapInterface<T>{
     
-    private final T[] heap;
-    private int lastIndex;
-    private boolean initialized = false;
+    private final T[] heap;//the array representing the heap
+    private int lastIndex;//the index of the last element
+    private boolean initialized = false;//the status of the array
     private static final int DEFAULT_CAPACITY = 25;
     private static final int MAX_CAPACITY = 10000;
 
-    private int swapCounter = 0;
+    private int swapCounter = 0;//the counter keeping track of swaps while heapifying
 
+    /**
+     * Default constructor for a heap
+     */
     public MaxHeap(){
         this(DEFAULT_CAPACITY);
     }
 
+    /**
+     * Heap constructor with capacity
+     * @param initialCapacity the capacity
+     */
     public MaxHeap(int initialCapacity){
         if (initialCapacity < DEFAULT_CAPACITY)
             initialCapacity = DEFAULT_CAPACITY;
@@ -25,6 +32,10 @@ public final class MaxHeap<T extends Comparable<? super T>> implements MaxHeapIn
         initialized = true;
     }
 
+    /**
+     * Heap constructor that builds a heap from an existing array
+     * @param entries the existing array
+     */
     public MaxHeap(T[] entries){
         this(entries.length);
         lastIndex = entries.length;
@@ -37,7 +48,10 @@ public final class MaxHeap<T extends Comparable<? super T>> implements MaxHeapIn
             reheap(rootIndex);
     }
 
-    // the sequential add method
+    /**
+     * Adds a new entry to a heap at the proper index
+     * @param newEntry the entry to be added
+     */
     public void add(T newEntry){
 
         checkInitialization();
@@ -49,7 +63,7 @@ public final class MaxHeap<T extends Comparable<? super T>> implements MaxHeapIn
             newIndex = parentIndex;
             parentIndex = newIndex / 2;
 
-            swapCounter++;
+            swapCounter++; //counts each time a swap has occured
         }
 
         heap[newIndex] = newEntry;
@@ -57,6 +71,9 @@ public final class MaxHeap<T extends Comparable<? super T>> implements MaxHeapIn
         ensureCapacity();
     }
 
+    /**
+     * Removes the max element (root) of a heap and reheapifys
+     */
     public T removeMax(){
 
         checkInitialization();
@@ -72,6 +89,9 @@ public final class MaxHeap<T extends Comparable<? super T>> implements MaxHeapIn
         return root;
     }
 
+    /**
+     * Returns the nax element (root) of a heap
+     */
     public T getMax(){
 
         checkInitialization();
@@ -82,16 +102,25 @@ public final class MaxHeap<T extends Comparable<? super T>> implements MaxHeapIn
         return root;
     }
 
+    /**
+     * Returns if a heap has elements
+     */
     public boolean isEmpty(){
 
         return lastIndex < 1;
     }
 
+    /**
+     * Returns the number of elements in the heap
+     */
     public int getSize(){
 
         return lastIndex;
     }
 
+    /**
+     * Removes all elements from the heap
+     */
     public void clear(){
 
         checkInitialization();
@@ -103,11 +132,18 @@ public final class MaxHeap<T extends Comparable<? super T>> implements MaxHeapIn
         lastIndex = 0;
     }
 
+    /**
+     * checks if the heap array has exceeded its capacity
+     * @param topIndex the highest index in the heap
+     */
     public void checkCapacity(int topIndex){
         if (topIndex > MAX_CAPACITY)
             throw new SecurityException("Array MaxHeap has exceeded maximum capacity.");
     }
 
+    /**
+     * Ensures the heap array is initialized
+     */
     public void checkInitialization(){
         if (!this.initialized){
             throw new SecurityException("Array MaxHeap is corrupt.");
@@ -115,15 +151,18 @@ public final class MaxHeap<T extends Comparable<? super T>> implements MaxHeapIn
     }
 
     public void ensureCapacity(){
-        /* Are we using this to make sure we have enough room for another child on a certain leaf?
-        ** If so should we use the formula to make sure that there is enough room in the array
-        ** to add a child based on the parents position in the array?
-        */
+        /**
+         * Ensures the heap has enough capacity
+         */
         if ((lastIndex * 2) > heap.length)
             throw new SecurityException("Array MaxHeap not currently large enough.");
     }
 
 
+    /**
+     * Heapifys the heap, ensuring leafs are of lower numberic value than parents
+     * @param rootIndex the index to start heapifying
+     */
     private void reheap(int rootIndex) {
         boolean done = false;
         T orphan = heap[rootIndex];
@@ -139,18 +178,26 @@ public final class MaxHeap<T extends Comparable<? super T>> implements MaxHeapIn
                 heap[rootIndex] = heap[largerChildIndex];
                 rootIndex = largerChildIndex;
                 leftChildIndex = 2 * rootIndex;
-                swapCounter++;
+                swapCounter++;//counts each time a swap has occured
             } else
                 done = true;
         }
         heap[rootIndex] = orphan;
     }
 
+    /**
+     * Prints the heap to screen
+     * @param x the number of entries to print
+     */
     public void toString(int x){
         for(int i = 1; i <= x; i++)
             System.out.print(heap[i] + ",");
     }
 
+    /**
+     * Counts the number of times a swap has occured while adding or heapifying.
+     * @return
+     */
     public int getSwap(){
         return swapCounter;
     }
