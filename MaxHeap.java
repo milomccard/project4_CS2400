@@ -196,7 +196,7 @@ public final class MaxHeap<T extends Comparable<? super T>> implements MaxHeapIn
 
     /**
      * Counts the number of times a swap has occured while adding or heapifying.
-     * @return
+     * @return the count of swaps
      */
     public int getSwap(){
         return swapCounter;
