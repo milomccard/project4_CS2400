@@ -10,82 +10,102 @@ import java.util.Scanner;
  */
 public class DriverMaxHeap{
 
-    
-    
     public static void main(String[] args) throws FileNotFoundException{
 
-
-        String fileName = "data_sorted.txt";
-
-        System.out.println("\n\n****************** Heap Generation ******************");
-        
-        generateHeap(fileName);
-
-        fileName = "data_random.txt";
-
-        generateHeap(fileName);
-
-
         
 
-        
+        System.out.println("\n\n****************** Heap Generation ******************");//header
 
+        String fileName = "data_sorted.txt";//the name of a file containing integers
+        
+        generateHeap(fileName);//generates a heap using both sequential and optimal methods
+
+        fileName = "data_random.txt";//the name of a file containing integers
+
+        generateHeap(fileName);//generates a heap using both sequential and optimal methods
     }
 
+    /**
+     * Wrapper function for generating a heap using sequential and optimal methods
+     * @param fileName the name of a file containing integers
+     * @throws FileNotFoundException standard exception
+     */
     static void generateHeap(String fileName) throws FileNotFoundException{
         System.out.println("\nFile name: " + fileName);
         sequentialInsertion(fileName);
         optimalMethod(fileName);
     }
 
+    /**
+     * Prints out a heap generated through sequential add method
+     * @param fileName the name of a file containing integers
+     * @throws FileNotFoundException standard exception
+     */
     static void sequentialInsertion(String fileName) throws FileNotFoundException{
+        //add integers from the file into the heap sequentially
         Scanner scan = new Scanner(new File(fileName));
         MaxHeap<Integer> heap = new MaxHeap<>(200);
         while(scan.hasNextInt())
             heap.add(scan.nextInt());
         scan.close();
 
+        //the number of iterations based on project parameters (output first x elements, remove max x times)
         int iterations = 10;
 
+        //prints the generated heap to console
         System.out.print("\n\tHeap built using sequential insertions: ");
         heap.toString(iterations);
         System.out.print("...\n\n");
 
+        //prints the number of swaps to the console
         System.out.println("\tNumber of swaps in the heap creation: " + heap.getSwap() + "\n");
 
+        //removes max element from heap x times based on project parameters
         for(int i = 0; i < iterations; i++){
             heap.removeMax();
         }
 
+        //prints heap after removals
         System.out.print("\tHeap after " + iterations + " removals: ");
         heap.toString(iterations);
         System.out.print("...");
         System.out.println("\n\n");
     }
 
+    /**
+     * Creates a heap using the optimal method
+     * @param fileName the name of a file containing integers
+     * @throws FileNotFoundException standard exception
+     */
     static void optimalMethod(String fileName) throws FileNotFoundException{
+        //creates an array based on integers in file
         File file = new File(fileName);
         Scanner scan = new Scanner(file);
         Integer[] arr = new Integer[100];
-        int counter = 0;
-        int iterations = 10;
+        int counter = 0;//helps create array from integers in file
+        int iterations = 10;//number of iterations based on project parameters
 
         while(scan.hasNextInt())
             arr[counter++] = scan.nextInt();
         scan.close();
 
+        //creates a heap using the optimal method by heapifying an existing array
         MaxHeap<Integer> heap = new MaxHeap<>(arr);
 
+        //output elements of the heap
         System.out.print("\n\tHeap built using optimal method: ");
         heap.toString(iterations);
         System.out.print("...\n\n");
 
+        //outputs number of swaps
         System.out.println("\tNumber of swaps in the heap creation: " + heap.getSwap() + "\n");
 
+        //removes max x elements
         for(int i = 0; i < iterations; i++){
             heap.removeMax();
         }
 
+        //outputs heap after removal
         System.out.print("\tHeap after " + iterations + " removals: ");
         heap.toString(iterations);
         System.out.print("...");
